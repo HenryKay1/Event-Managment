@@ -1,0 +1,6 @@
+[submodule "event-service"]
+	path = event-service
+	url = https://github.com/yourusername/event-service.git
+[submodule "user-service"]
+	path = user-service
+	url = https://github.com/yourusername/user-service.git
