@@ -5,6 +5,9 @@ import Events from './pages/Event/events';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Layout from './Components/Layout/layout';
+import Register from './pages/Account/register';
+import Login from './pages/Account/login';
+
 
 const App: React.FC = () => {
   return (
@@ -15,6 +18,9 @@ const App: React.FC = () => {
           <Route path="/events" element={<Events />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+
         </Routes>
       </Layout>
     </Router>

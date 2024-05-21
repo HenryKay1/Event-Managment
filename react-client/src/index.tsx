@@ -7,6 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 // src/index.tsx or src/App.tsx
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './pages/Account/styles/global.css';
+
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

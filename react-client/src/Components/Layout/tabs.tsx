@@ -14,6 +14,8 @@ const Tabs: React.FC = () => {
       <Link to="/events" style={{ ...styles.tab, ...(location.pathname === '/events' && styles.activeTab) }}>Events</Link>
       <Link to="/about" style={{ ...styles.tab, ...(location.pathname === '/about' && styles.activeTab) }}>About</Link>
       <Link to="/contact" style={{ ...styles.tab, ...(location.pathname === '/contact' && styles.activeTab) }}>Contact</Link>
+      <Link to="/register" style={{ ...styles.tab, ...(location.pathname === '/register' && styles.activeTab) }}>Register</Link>
+      <Link to="/login" style={{ ...styles.tab, ...(location.pathname === '/login' && styles.activeTab) }}>Login</Link>
       {isLoggedIn ? (
         <Dropdown>
           <Dropdown.Toggle style={{ ...styles.tab, ...styles.dropdownToggle }} id="dropdown-basic">
