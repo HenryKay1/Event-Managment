@@ -2,24 +2,11 @@ import React from 'react';
 import './styles/login.css';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { loginRequest } from '../../actions/Account/login';
-import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { LoginData, loginSchema, onSubmit } from './ts/login';
 
 
-interface LoginData {
-  email: string;
-  password: string;
-}
-
- const loginSchema = yup.object().shape({
-  email: yup.string().required('Email is required')
-    .email('Email is not valid')
-    .min(6, 'Email must have at least 6 characters'),
-  password: yup.string().required('Password is required')
-    .matches(/^(?=.*[A-Z])(?=.*[!@#$%^&*])/,'Password must contain at least one special character, and uppercase letter')
-    .min(6, 'Password  have at least 6 characters'),
-});
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,14 +15,7 @@ const LoginPage: React.FC = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginData> = async data => {
-    try {
-      const response = await loginRequest(data);
-      console.log('Login successful:', response);
-    } catch (error) {
-      console.error('Error logging in:', error);
-    }
-  };
+
 
   return (
     <div className='lgn-main-container'>

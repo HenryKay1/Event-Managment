@@ -1,28 +1,34 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import 'cropperjs/dist/cropper.css';
 import { Cropper } from 'react-cropper';
 import Modal from 'react-modal';
-import CropperJS from 'cropperjs';
-import './styles/register.css';
 import { FaUserCircle, FaEdit } from 'react-icons/fa';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { cities, states, countries, zipCodes } from './../../assets/data';
-import { User, schema } from '../../models/user';
 
+import './styles/register.css';
+import { useImageCropper } from './ts/register';
+import { schema } from '../../models/user';
 
 Modal.setAppElement('#root');
 
-
-
-
+interface User {
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  reenterPassword: string;
+  address: string;
+  country: string;
+  state: string;
+  city: string;
+  zipCode: string;
+}
 
 const RegisterPage: React.FC = () => {
-  const [image, setImage] = useState<string | null>(null);
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const cropperRef = useRef<HTMLImageElement & { cropper: CropperJS }>(null);
+  const { image, modalIsOpen, cropperRef, onImageChange, getCroppedImage, setModalIsOpen } = useImageCropper();
 
   const { register, handleSubmit, formState: { errors } } = useForm<User>({
     resolver: yupResolver(schema),
@@ -30,57 +36,6 @@ const RegisterPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<User> = data => {
     console.log(data);
-  };
-
-  const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImage(reader.result as string);
-        setModalIsOpen(true);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const getCroppedImage = () => {
-    if (cropperRef.current) {
-      const cropper = cropperRef.current.cropper;
-      const croppedCanvas = cropper.getCroppedCanvas();
-
-      // Create a circular cropped image
-      const circularCanvas = document.createElement('canvas');
-      const diameter = Math.min(croppedCanvas.width, croppedCanvas.height);
-      circularCanvas.width = diameter;
-      circularCanvas.height = diameter;
-      const ctx = circularCanvas.getContext('2d');
-
-      // Draw the circular clipping path
-      ctx!.beginPath();
-      ctx!.arc(diameter / 2, diameter / 2, diameter / 2, 0, Math.PI * 2);
-      ctx!.closePath();
-      ctx!.clip();
-
-      // Draw the cropped square onto the circular clipping path
-      ctx!.drawImage(
-        croppedCanvas,
-        (croppedCanvas.width - diameter) / 2,
-        (croppedCanvas.height - diameter) / 2,
-        diameter,
-        diameter,
-        0,
-        0,
-        diameter,
-        diameter
-      );
-
-      // Get the circular cropped image as a data URL
-      const croppedImageURL = circularCanvas.toDataURL();
-      setImage(croppedImageURL);
-      setModalIsOpen(false);
-    }
   };
 
   return (
@@ -104,7 +59,6 @@ const RegisterPage: React.FC = () => {
             <FaUserCircle className="default-icon" size={200} />
           )}
           <FaEdit className="edit-icon" title='Edit Image' color='black' size={40}  />
-
         </div>
         <input
           type="file"
@@ -255,7 +209,7 @@ const RegisterPage: React.FC = () => {
           <div><button type="submit" className="btn btn-primary">Register</button></div>
           <div>
             <button type="submit" className="btn btn-primary">Login</button>
-            <p>Already have anccount?</p></div>
+            <p>Already have an account?</p></div>
         </div>
       </form>
     </section>
@@ -263,8 +217,6 @@ const RegisterPage: React.FC = () => {
 
     </div>
     </div>
-
-
   );
 };
 
